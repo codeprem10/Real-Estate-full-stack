@@ -1,13 +1,18 @@
 { 
-"version": 2, 
-"name": "node-js",
-"env": {
-  "NODE_VERSION": "24.x"
-},
-"builds": [ 
-{ "src": "index.js", "use": "@vercel/node@3.0.0" }
-],
-"routes":[ 
-{ "src": "/(.*)", "dest": "/" } 
-] 
+  "version": 2,
+  "env": {
+    "NODE_VERSION": "24.11.0"
+  },
+  "builds": [ 
+    { 
+      "src": "index.js", 
+      "use": "@vercel/node",
+      "config": {
+        "nodeVersion": "24.x"
+      }
+    }
+  ],
+  "routes":[ 
+    { "src": "/(.*)", "dest": "/" } 
+  ] 
 }
