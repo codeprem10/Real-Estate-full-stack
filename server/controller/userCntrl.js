@@ -14,8 +14,9 @@ export const createUser = asyncHandler(async(req,res)=>{
             message:"User registered succesfully",
             user:user
         });
-    } else(res.status(201).send({message:"User already registered"})
-    );
+    } else {
+        res.status(201).send({message:"User already registered"});
+    }
 });
 
 //function to book visit

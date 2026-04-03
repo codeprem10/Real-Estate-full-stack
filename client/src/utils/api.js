@@ -2,8 +2,17 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 
+// Determine API base URL based on environment
+const getBaseURL = () => {
+    if (import.meta.env.MODE === 'development') {
+        return 'http://localhost:3000/api';
+    }
+    // For production, use the backend deployed URL
+    return import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+};
+
  export const api = axios.create({
-    baseURL:"https://real-estate-full-stack-nlw8.vercel.app/api",
+    baseURL: getBaseURL(),
  });
 
  export const getAllProperties = async()=>{

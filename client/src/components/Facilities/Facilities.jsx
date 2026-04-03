@@ -8,8 +8,12 @@ import { createResidency } from '../../utils/api';
 import { useAuth0 } from '@auth0/auth0-react'
 import { Form } from 'react-router-dom';
 
-const Facilities = ({prevStep,setOpened,setActiveStep,propertyDetails,setPropertyDetails}) => {
 
+
+
+
+const Facilities = ({prevStep,setOpened,setActiveStep,propertyDetails,setPropertyDetails}) => {
+    const { getAccessTokenSilently } = useAuth0();
     const form = useForm({
         initialValues:{
             bedrooms: propertyDetails.facilities.bedrooms,
@@ -45,16 +49,39 @@ const Facilities = ({prevStep,setOpened,setActiveStep,propertyDetails,setPropert
 // } = useContext(UserDetailContext);
 
 //chatgpt
-const userContext = useContext(UserDetailContext);
-const token = userContext?.userDetails?.token || ""; // ✅ Safe fallback
+
+// const userContext = useContext(UserDetailContext);
+// const token = userContext?.userDetails?.token || ""; // ✅ Safe fallback
 
 
 const {refetch : refetchProperties } = useProperties()
 
 const {mutate , isLoading} = useMutation({
-    mutationFn:()=>createResidency({
-        ...propertyDetails , facilities:{bedrooms , parkings , bathrooms},
-    },token),
+    //chatgpt solution
+    mutationFn: async () => {
+//   const token = await getAccessTokenSilently();
+const token = await getAccessTokenSilently({
+      authorizationParams: {
+        audience: "https://dev-w4gdvyd3ugiug370.us.auth0.com/api/v2/"
+      }
+    });
+
+    //chatgpt
+    console.log("TOKEN:", token);
+
+  return createResidency(
+    {
+      ...propertyDetails,
+      facilities: { bedrooms, parkings, bathrooms },
+    },
+    token
+  );
+},
+
+
+    // mutationFn:()=>createResidency({
+    //     ...propertyDetails , facilities:{bedrooms , parkings , bathrooms},
+    // },token),
     onError:({response}) => toast.error(response.data.message , {position:"bottom-right"}),
     onSettled:()=>{
         toast.success("Added Successfully" , {position:"bottom-right"});
