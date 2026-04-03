@@ -2,17 +2,5 @@
   "version": 2,
   "env": {
     "NODE_VERSION": "24.11.0"
-  },
-  "builds": [ 
-    { 
-      "src": "index.js", 
-      "use": "@vercel/node",
-      "config": {
-        "nodeVersion": "24.x"
-      }
-    }
-  ],
-  "routes":[ 
-    { "src": "/(.*)", "dest": "/" } 
-  ] 
+  }
 }
